@@ -3,12 +3,12 @@
  */
 
 import * as serializers from "../../..";
-import { MetriportApi } from "@fern-api/metriport";
+import { Metriport } from "@fern-api/metriport";
 import * as core from "../../../../core";
 
 export const DownloadDocumentResponse: core.serialization.ObjectSchema<
     serializers.DownloadDocumentResponse.Raw,
-    MetriportApi.DownloadDocumentResponse
+    Metriport.DownloadDocumentResponse
 > = core.serialization.object({
     url: core.serialization.string(),
 });

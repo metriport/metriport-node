@@ -1,2 +1,2 @@
-export { MetriportApiError } from "./MetriportApiError";
-export { MetriportApiTimeoutError } from "./MetriportApiTimeoutError";
+export { MetriportError } from "./MetriportError";
+export { MetriportTimeoutError } from "./MetriportTimeoutError";

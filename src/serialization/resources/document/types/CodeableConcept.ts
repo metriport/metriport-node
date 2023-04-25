@@ -3,12 +3,12 @@
  */
 
 import * as serializers from "../../..";
-import { MetriportApi } from "@fern-api/metriport";
+import { Metriport } from "@fern-api/metriport";
 import * as core from "../../../../core";
 
 export const CodeableConcept: core.serialization.ObjectSchema<
     serializers.CodeableConcept.Raw,
-    MetriportApi.CodeableConcept
+    Metriport.CodeableConcept
 > = core.serialization.object({
     coding: core.serialization
         .list(core.serialization.lazyObject(async () => (await import("../../..")).Coding))

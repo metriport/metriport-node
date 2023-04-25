@@ -3,7 +3,7 @@
  */
 
 import * as core from "../../../../core";
-import { MetriportApi } from "@fern-api/metriport";
+import { Metriport } from "@fern-api/metriport";
 import URLSearchParams from "@ungap/url-search-params";
 import urlJoin from "url-join";
 import * as serializers from "../../../../serialization";
@@ -22,7 +22,7 @@ export class Document {
     /**
      * Queries for all available document metadata for the specified patient across HIEs
      */
-    public async get(request: MetriportApi.GetDocumentsRequest): Promise<MetriportApi.GetDocumentsResponse> {
+    public async get(request: Metriport.GetDocumentsRequest): Promise<Metriport.GetDocumentsResponse> {
         const { patientId, facilityId, forceQuery } = request;
         const _queryParams = new URLSearchParams();
         _queryParams.append("patientId", patientId);
@@ -49,7 +49,7 @@ export class Document {
         }
 
         if (_response.error.reason === "status-code") {
-            throw new errors.MetriportApiError({
+            throw new errors.MetriportError({
                 statusCode: _response.error.statusCode,
                 body: _response.error.body,
             });
@@ -57,14 +57,14 @@ export class Document {
 
         switch (_response.error.reason) {
             case "non-json":
-                throw new errors.MetriportApiError({
+                throw new errors.MetriportError({
                     statusCode: _response.error.statusCode,
                     body: _response.error.rawBody,
                 });
             case "timeout":
-                throw new errors.MetriportApiTimeoutError();
+                throw new errors.MetriportTimeoutError();
             case "unknown":
-                throw new errors.MetriportApiError({
+                throw new errors.MetriportError({
                     message: _response.error.errorMessage,
                 });
         }
@@ -74,8 +74,8 @@ export class Document {
      * Triggers a document query for the specified patient across HIEs
      */
     public async triggerQuery(
-        request: MetriportApi.TriggerDocumentsQueryRequest
-    ): Promise<MetriportApi.TriggerDocumentsQueryResponse> {
+        request: Metriport.TriggerDocumentsQueryRequest
+    ): Promise<Metriport.TriggerDocumentsQueryResponse> {
         const { patientId, facilityId } = request;
         const _queryParams = new URLSearchParams();
         _queryParams.append("patientId", patientId);
@@ -98,7 +98,7 @@ export class Document {
         }
 
         if (_response.error.reason === "status-code") {
-            throw new errors.MetriportApiError({
+            throw new errors.MetriportError({
                 statusCode: _response.error.statusCode,
                 body: _response.error.body,
             });
@@ -106,14 +106,14 @@ export class Document {
 
         switch (_response.error.reason) {
             case "non-json":
-                throw new errors.MetriportApiError({
+                throw new errors.MetriportError({
                     statusCode: _response.error.statusCode,
                     body: _response.error.rawBody,
                 });
             case "timeout":
-                throw new errors.MetriportApiTimeoutError();
+                throw new errors.MetriportTimeoutError();
             case "unknown":
-                throw new errors.MetriportApiError({
+                throw new errors.MetriportError({
                     message: _response.error.errorMessage,
                 });
         }
@@ -122,9 +122,7 @@ export class Document {
     /**
      * Fetches the document from S3 and sends a presigned URL
      */
-    public async download(
-        request: MetriportApi.DownloadDocumentRequest
-    ): Promise<MetriportApi.DownloadDocumentResponse> {
+    public async download(request: Metriport.DownloadDocumentRequest): Promise<Metriport.DownloadDocumentResponse> {
         const { fileName } = request;
         const _queryParams = new URLSearchParams();
         _queryParams.append("fileName", fileName);
@@ -146,7 +144,7 @@ export class Document {
         }
 
         if (_response.error.reason === "status-code") {
-            throw new errors.MetriportApiError({
+            throw new errors.MetriportError({
                 statusCode: _response.error.statusCode,
                 body: _response.error.body,
             });
@@ -154,14 +152,14 @@ export class Document {
 
         switch (_response.error.reason) {
             case "non-json":
-                throw new errors.MetriportApiError({
+                throw new errors.MetriportError({
                     statusCode: _response.error.statusCode,
                     body: _response.error.rawBody,
                 });
             case "timeout":
-                throw new errors.MetriportApiTimeoutError();
+                throw new errors.MetriportTimeoutError();
             case "unknown":
-                throw new errors.MetriportApiError({
+                throw new errors.MetriportError({
                     message: _response.error.errorMessage,
                 });
         }

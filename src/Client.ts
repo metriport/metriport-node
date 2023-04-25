@@ -5,15 +5,15 @@
 import * as core from "./core";
 import { Document } from "./api/resources/document/client/Client";
 
-export declare namespace MetriportApiClient {
+export declare namespace MetriportClient {
     interface Options {
         environment: string;
         apiKey: core.Supplier<string>;
     }
 }
 
-export class MetriportApiClient {
-    constructor(protected readonly options: MetriportApiClient.Options) {}
+export class MetriportClient {
+    constructor(protected readonly options: MetriportClient.Options) {}
 
     protected _document: Document | undefined;
 

@@ -3,10 +3,10 @@
  */
 
 import * as serializers from "../../..";
-import { MetriportApi } from "@fern-api/metriport";
+import { Metriport } from "@fern-api/metriport";
 import * as core from "../../../../core";
 
-export const QueryStatus: core.serialization.Schema<serializers.QueryStatus.Raw, MetriportApi.QueryStatus> =
+export const QueryStatus: core.serialization.Schema<serializers.QueryStatus.Raw, Metriport.QueryStatus> =
     core.serialization.enum_(["processing", "completed"]);
 
 export declare namespace QueryStatus {

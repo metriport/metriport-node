@@ -3,12 +3,12 @@
  */
 
 import * as serializers from "../../..";
-import { MetriportApi } from "@fern-api/metriport";
+import { Metriport } from "@fern-api/metriport";
 import * as core from "../../../../core";
 
 export const GetDocumentsResponse: core.serialization.ObjectSchema<
     serializers.GetDocumentsResponse.Raw,
-    MetriportApi.GetDocumentsResponse
+    Metriport.GetDocumentsResponse
 > = core.serialization.object({
     queryStatus: core.serialization.lazy(async () => (await import("../../..")).QueryStatus),
     documents: core.serialization.list(core.serialization.lazyObject(async () => (await import("../../..")).Document)),

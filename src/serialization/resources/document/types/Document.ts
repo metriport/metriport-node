@@ -3,10 +3,10 @@
  */
 
 import * as serializers from "../../..";
-import { MetriportApi } from "@fern-api/metriport";
+import { Metriport } from "@fern-api/metriport";
 import * as core from "../../../../core";
 
-export const Document: core.serialization.ObjectSchema<serializers.Document.Raw, MetriportApi.Document> =
+export const Document: core.serialization.ObjectSchema<serializers.Document.Raw, Metriport.Document> =
     core.serialization.object({
         id: core.serialization.string(),
         fileName: core.serialization.string(),

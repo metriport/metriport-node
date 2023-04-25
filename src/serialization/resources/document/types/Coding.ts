@@ -3,10 +3,10 @@
  */
 
 import * as serializers from "../../..";
-import { MetriportApi } from "@fern-api/metriport";
+import { Metriport } from "@fern-api/metriport";
 import * as core from "../../../../core";
 
-export const Coding: core.serialization.ObjectSchema<serializers.Coding.Raw, MetriportApi.Coding> =
+export const Coding: core.serialization.ObjectSchema<serializers.Coding.Raw, Metriport.Coding> =
     core.serialization.object({
         system: core.serialization.string().optional(),
         code: core.serialization.string().optional(),

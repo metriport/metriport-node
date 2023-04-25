@@ -3,12 +3,12 @@
  */
 
 import * as serializers from "../../..";
-import { MetriportApi } from "@fern-api/metriport";
+import { Metriport } from "@fern-api/metriport";
 import * as core from "../../../../core";
 
 export const TriggerDocumentsQueryResponse: core.serialization.ObjectSchema<
     serializers.TriggerDocumentsQueryResponse.Raw,
-    MetriportApi.TriggerDocumentsQueryResponse
+    Metriport.TriggerDocumentsQueryResponse
 > = core.serialization.object({
     queryStatus: core.serialization.lazy(async () => (await import("../../..")).QueryStatus),
 });
