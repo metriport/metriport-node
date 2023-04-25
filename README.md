@@ -1,22 +1,31 @@
-# {Company} Node Library
+# Metriport Node Library
 
-[![npm shield](https://img.shields.io/npm/v/@fern-api/{company})](https://www.npmjs.com/package/@fern-api/{company})
+[![npm shield](https://img.shields.io/npm/v/@fern-api/metriport)](https://www.npmjs.com/package/@fern-api/metriport)
 [![fern shield](https://img.shields.io/badge/%F0%9F%8C%BF-SDK%20generated%20by%20Fern-brightgreen)](https://github.com/fern-api/fern)
 
-The {Company} Node.js library provides access to the {Company} API from JavaScript/TypeScript.
+The Metriport Node.js library provides access to the Metriport API from JavaScript/TypeScript.
 
 ## Documentation
 
-API reference documentation is available [here](docs_url).
+API reference documentation is available [here](https://docs.metriport.com/home/welcome).
 
 ## Usage
 
-[![Try it out](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](TODO)
+[![Try it out](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/edit/metriport-ts-sdk?file=app.ts&view=editor)
 
 ```typescript
-import { TODO } from "TODO";
+import { MetriportClient } from '@fern-api/metriport';
 
-const TODO
+const client = new MetriportClient({
+    apiKey: 'YOUR_API_KEY',
+});
+
+const response = await client.document.get({
+    patientId: 'some-patient-id',
+    facilityId: 'some-facility-id',
+});
+
+console.log('Received response from Metriport!', response);
 ```
 
 ## Beta status
