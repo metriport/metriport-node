@@ -4,21 +4,32 @@
 
 import * as environments from "./environments";
 import * as core from "./core";
-import { Document } from "./api/resources/document/client/Client";
+import { Devices } from "./api/resources/devices/client/Client";
+import { Medical } from "./api/resources/medical/client/Client";
 
 export declare namespace MetriportClient {
     interface Options {
-        environment?: environments.MetriportEnvironment | string;
+        environment?: core.Supplier<environments.MetriportEnvironment | string>;
         apiKey: core.Supplier<string>;
+    }
+
+    interface RequestOptions {
+        timeoutInSeconds?: number;
     }
 }
 
 export class MetriportClient {
-    constructor(protected readonly options: MetriportClient.Options) {}
+    constructor(protected readonly _options: MetriportClient.Options) {}
 
-    protected _document: Document | undefined;
+    protected _devices: Devices | undefined;
 
-    public get document(): Document {
-        return (this._document ??= new Document(this.options));
+    public get devices(): Devices {
+        return (this._devices ??= new Devices(this._options));
+    }
+
+    protected _medical: Medical | undefined;
+
+    public get medical(): Medical {
+        return (this._medical ??= new Medical(this._options));
     }
 }

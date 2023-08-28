@@ -3,8 +3,7 @@
  */
 
 export const MetriportEnvironment = {
-    Production: "https://api.metriport.com",
-    Sandbox: "https://api.sandbox.metriport.com",
+    Production: "https://api.metriport.com/medical/v1",
 } as const;
 
-export type MetriportEnvironment = typeof MetriportEnvironment.Production | typeof MetriportEnvironment.Sandbox;
+export type MetriportEnvironment = typeof MetriportEnvironment.Production;

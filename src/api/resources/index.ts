@@ -1,3 +1,4 @@
-export * as document from "./document";
-export * from "./document/types";
-export * from "./document/client/requests";
+export * as devices from "./devices";
+export * as commons from "./commons";
+export * from "./commons/types";
+export * as medical from "./medical";
