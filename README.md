@@ -19,7 +19,7 @@ yarn add @fern-api/metriport
 
 ## Usage
 
-[![Try it out](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/edit/metriport-ts-sdk?file=app.ts&view=editor)
+[![Try it out](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/edit/metriport-ts-sdk-ws1txg?file=app.ts&view=editor)
 
 ```typescript
 import { MetriportClient, Metriport } from '@fern-api/metriport';
