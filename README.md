@@ -9,23 +9,57 @@ The Metriport Node.js library provides access to the Metriport API from JavaScri
 
 API reference documentation is available [here](https://docs.metriport.com/home/welcome).
 
+## Installation
+
+```
+npm install --save @fern-api/metriport
+# or
+yarn add @fern-api/metriport
+```
+
 ## Usage
 
 [![Try it out](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/edit/metriport-ts-sdk?file=app.ts&view=editor)
 
 ```typescript
-import { MetriportClient } from '@fern-api/metriport';
+import { MetriportClient, Metriport } from '@fern-api/metriport';
 
-const client = new MetriportClient({
+const metriport = new MetriportClient({
     apiKey: 'YOUR_API_KEY',
 });
 
-const response = await client.document.get({
-    patientId: 'some-patient-id',
-    facilityId: 'some-facility-id',
+const response = await metriport.medical.organization.create({
+  type: Metriport.OrgType.PostAcuteCare,
+  name: "Metriport Inc.",
+  location: {
+    addressLine1: "2261 Market Street",
+    addressLine2: "#4818",
+    city: "San Francisco",
+    state: Metriport.UsState.CA,
+    zip: "94114",
+    country: "USA",
+  }
 });
 
 console.log('Received response from Metriport!', response);
+```
+
+## Handling errors
+
+When the API returns a non-success status code (4xx or 5xx response), a subclass of [MetriportError](src/errors/MetriportError.ts) will be thrown:
+
+```ts
+import { MetriportError } from '@fern-api/metriport';
+
+try {
+  await metriport.medical.patients.get("patient-id");
+} catch (err) {
+  if (err instanceof MetriportError) {
+    console.log(err.statusCode);
+    console.log(err.message);
+    console.log(err.body); 
+  }
+}
 ```
 
 ## Beta status
