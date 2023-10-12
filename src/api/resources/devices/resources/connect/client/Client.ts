@@ -46,7 +46,7 @@ export class Connect {
                 "X-API-Key": await core.Supplier.get(this._options.apiKey),
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "@fern-api/metriport",
-                "X-Fern-SDK-Version": "0.1.4",
+                "X-Fern-SDK-Version": "0.1.5",
             },
             contentType: "application/json",
             queryParameters: _queryParams,
