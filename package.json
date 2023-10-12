@@ -1,6 +1,6 @@
 {
     "name": "@fern-api/metriport",
-    "version": "0.1.6",
+    "version": "0.1.7",
     "private": false,
     "repository": "https://github.com/metriport/metriport-node",
     "main": "./index.js",
