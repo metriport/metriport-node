@@ -40,7 +40,7 @@ export class Facility {
                 "X-API-Key": await core.Supplier.get(this._options.apiKey),
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "@fern-api/metriport",
-                "X-Fern-SDK-Version": "0.1.7",
+                "X-Fern-SDK-Version": "0.1.8",
             },
             contentType: "application/json",
             body: await serializers.medical.BaseFacility.jsonOrThrow(request, { unrecognizedObjectKeys: "strip" }),
@@ -91,7 +91,7 @@ export class Facility {
                 "X-API-Key": await core.Supplier.get(this._options.apiKey),
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "@fern-api/metriport",
-                "X-Fern-SDK-Version": "0.1.7",
+                "X-Fern-SDK-Version": "0.1.8",
             },
             contentType: "application/json",
             timeoutMs: requestOptions?.timeoutInSeconds != null ? requestOptions.timeoutInSeconds * 1000 : 60000,
@@ -145,7 +145,7 @@ export class Facility {
                 "X-API-Key": await core.Supplier.get(this._options.apiKey),
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "@fern-api/metriport",
-                "X-Fern-SDK-Version": "0.1.7",
+                "X-Fern-SDK-Version": "0.1.8",
             },
             contentType: "application/json",
             body: await serializers.medical.BaseFacility.jsonOrThrow(request, { unrecognizedObjectKeys: "strip" }),
@@ -185,7 +185,7 @@ export class Facility {
     /**
      * Lists all of your Facilities.
      */
-    public async list(requestOptions?: Facility.RequestOptions): Promise<Metriport.medical.ListFacilitiesResponse> {
+    public async list(requestOptions?: Facility.RequestOptions): Promise<Metriport.medical.Facility[]> {
         const _response = await core.fetcher({
             url: urlJoin(
                 (await core.Supplier.get(this._options.environment)) ?? environments.MetriportEnvironment.Production,
@@ -196,13 +196,13 @@ export class Facility {
                 "X-API-Key": await core.Supplier.get(this._options.apiKey),
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "@fern-api/metriport",
-                "X-Fern-SDK-Version": "0.1.7",
+                "X-Fern-SDK-Version": "0.1.8",
             },
             contentType: "application/json",
             timeoutMs: requestOptions?.timeoutInSeconds != null ? requestOptions.timeoutInSeconds * 1000 : 60000,
         });
         if (_response.ok) {
-            return await serializers.medical.ListFacilitiesResponse.parseOrThrow(_response.body, {
+            return await serializers.medical.facility.list.Response.parseOrThrow(_response.body, {
                 unrecognizedObjectKeys: "passthrough",
                 allowUnrecognizedUnionMembers: true,
                 allowUnrecognizedEnumValues: true,

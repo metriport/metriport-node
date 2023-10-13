@@ -50,7 +50,7 @@ export class Patient {
                 "X-API-Key": await core.Supplier.get(this._options.apiKey),
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "@fern-api/metriport",
-                "X-Fern-SDK-Version": "0.1.7",
+                "X-Fern-SDK-Version": "0.1.8",
             },
             contentType: "application/json",
             queryParameters: _queryParams,
@@ -102,7 +102,7 @@ export class Patient {
                 "X-API-Key": await core.Supplier.get(this._options.apiKey),
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "@fern-api/metriport",
-                "X-Fern-SDK-Version": "0.1.7",
+                "X-Fern-SDK-Version": "0.1.8",
             },
             contentType: "application/json",
             timeoutMs: requestOptions?.timeoutInSeconds != null ? requestOptions.timeoutInSeconds * 1000 : 60000,
@@ -159,7 +159,7 @@ export class Patient {
                 "X-API-Key": await core.Supplier.get(this._options.apiKey),
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "@fern-api/metriport",
-                "X-Fern-SDK-Version": "0.1.7",
+                "X-Fern-SDK-Version": "0.1.8",
             },
             contentType: "application/json",
             queryParameters: _queryParams,
@@ -201,15 +201,12 @@ export class Patient {
      * Lists all Patients receiving care at the specified Facility.
      */
     public async list(
-        request: Metriport.medical.PatientList = {},
+        request: Metriport.medical.PatientList,
         requestOptions?: Patient.RequestOptions
-    ): Promise<Metriport.medical.ListPatientsResponse> {
+    ): Promise<Metriport.medical.Patient[]> {
         const { facilityId } = request;
         const _queryParams = new URLSearchParams();
-        if (facilityId != null) {
-            _queryParams.append("facilityId", facilityId);
-        }
-
+        _queryParams.append("facilityId", facilityId);
         const _response = await core.fetcher({
             url: urlJoin(
                 (await core.Supplier.get(this._options.environment)) ?? environments.MetriportEnvironment.Production,
@@ -220,14 +217,14 @@ export class Patient {
                 "X-API-Key": await core.Supplier.get(this._options.apiKey),
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "@fern-api/metriport",
-                "X-Fern-SDK-Version": "0.1.7",
+                "X-Fern-SDK-Version": "0.1.8",
             },
             contentType: "application/json",
             queryParameters: _queryParams,
             timeoutMs: requestOptions?.timeoutInSeconds != null ? requestOptions.timeoutInSeconds * 1000 : 60000,
         });
         if (_response.ok) {
-            return await serializers.medical.ListPatientsResponse.parseOrThrow(_response.body, {
+            return await serializers.medical.patient.list.Response.parseOrThrow(_response.body, {
                 unrecognizedObjectKeys: "passthrough",
                 allowUnrecognizedUnionMembers: true,
                 allowUnrecognizedEnumValues: true,
@@ -281,7 +278,7 @@ export class Patient {
                 "X-API-Key": await core.Supplier.get(this._options.apiKey),
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "@fern-api/metriport",
-                "X-Fern-SDK-Version": "0.1.7",
+                "X-Fern-SDK-Version": "0.1.8",
             },
             contentType: "application/json",
             queryParameters: _queryParams,
