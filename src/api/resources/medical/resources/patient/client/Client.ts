@@ -5,7 +5,6 @@
 import * as environments from "../../../../../../environments";
 import * as core from "../../../../../../core";
 import * as Metriport from "../../../../..";
-import { default as URLSearchParams } from "@ungap/url-search-params";
 import * as serializers from "../../../../../../serialization";
 import urlJoin from "url-join";
 import * as errors from "../../../../../../errors";
@@ -18,6 +17,7 @@ export declare namespace Patient {
 
     interface RequestOptions {
         timeoutInSeconds?: number;
+        maxRetries?: number;
     }
 }
 
@@ -26,7 +26,6 @@ export class Patient {
 
     /**
      * Creates a Patient in Metriport for the specified Facility where the patient is receiving care.
-     *
      * The more demographic info you can provide about a Patient,
      * the higher chances Metriport will be able to find a match.
      * For example, nicknames, old addresses, multiple phone numbers,
@@ -38,24 +37,25 @@ export class Patient {
         requestOptions?: Patient.RequestOptions
     ): Promise<Metriport.medical.Patient> {
         const { facilityId, body: _body } = request;
-        const _queryParams = new URLSearchParams();
-        _queryParams.append("facilityId", facilityId);
+        const _queryParams: Record<string, string | string[]> = {};
+        _queryParams["facilityId"] = facilityId;
         const _response = await core.fetcher({
             url: urlJoin(
                 (await core.Supplier.get(this._options.environment)) ?? environments.MetriportEnvironment.Production,
-                "/patient"
+                "/medical/v1/patient"
             ),
             method: "POST",
             headers: {
                 "X-API-Key": await core.Supplier.get(this._options.apiKey),
                 "X-Fern-Language": "JavaScript",
-                "X-Fern-SDK-Name": "@fern-api/metriport",
-                "X-Fern-SDK-Version": "0.1.8",
+                "X-Fern-SDK-Name": "@metriport/api-sdk",
+                "X-Fern-SDK-Version": "8.0.0-alpha1",
             },
             contentType: "application/json",
             queryParameters: _queryParams,
             body: await serializers.medical.BasePatient.jsonOrThrow(_body, { unrecognizedObjectKeys: "strip" }),
             timeoutMs: requestOptions?.timeoutInSeconds != null ? requestOptions.timeoutInSeconds * 1000 : 60000,
+            maxRetries: requestOptions?.maxRetries,
         });
         if (_response.ok) {
             return await serializers.medical.Patient.parseOrThrow(_response.body, {
@@ -95,17 +95,18 @@ export class Patient {
         const _response = await core.fetcher({
             url: urlJoin(
                 (await core.Supplier.get(this._options.environment)) ?? environments.MetriportEnvironment.Production,
-                `/patient/${id}`
+                `/medical/v1/patient/${id}`
             ),
             method: "GET",
             headers: {
                 "X-API-Key": await core.Supplier.get(this._options.apiKey),
                 "X-Fern-Language": "JavaScript",
-                "X-Fern-SDK-Name": "@fern-api/metriport",
-                "X-Fern-SDK-Version": "0.1.8",
+                "X-Fern-SDK-Name": "@metriport/api-sdk",
+                "X-Fern-SDK-Version": "8.0.0-alpha1",
             },
             contentType: "application/json",
             timeoutMs: requestOptions?.timeoutInSeconds != null ? requestOptions.timeoutInSeconds * 1000 : 60000,
+            maxRetries: requestOptions?.maxRetries,
         });
         if (_response.ok) {
             return await serializers.medical.Patient.parseOrThrow(_response.body, {
@@ -147,24 +148,25 @@ export class Patient {
         requestOptions?: Patient.RequestOptions
     ): Promise<Metriport.medical.Patient> {
         const { facilityId, body: _body } = request;
-        const _queryParams = new URLSearchParams();
-        _queryParams.append("facilityId", facilityId);
+        const _queryParams: Record<string, string | string[]> = {};
+        _queryParams["facilityId"] = facilityId;
         const _response = await core.fetcher({
             url: urlJoin(
                 (await core.Supplier.get(this._options.environment)) ?? environments.MetriportEnvironment.Production,
-                `/patient/${id}`
+                `/medical/v1/patient/${id}`
             ),
             method: "PUT",
             headers: {
                 "X-API-Key": await core.Supplier.get(this._options.apiKey),
                 "X-Fern-Language": "JavaScript",
-                "X-Fern-SDK-Name": "@fern-api/metriport",
-                "X-Fern-SDK-Version": "0.1.8",
+                "X-Fern-SDK-Name": "@metriport/api-sdk",
+                "X-Fern-SDK-Version": "8.0.0-alpha1",
             },
             contentType: "application/json",
             queryParameters: _queryParams,
             body: await serializers.medical.BasePatient.jsonOrThrow(_body, { unrecognizedObjectKeys: "strip" }),
             timeoutMs: requestOptions?.timeoutInSeconds != null ? requestOptions.timeoutInSeconds * 1000 : 60000,
+            maxRetries: requestOptions?.maxRetries,
         });
         if (_response.ok) {
             return await serializers.medical.Patient.parseOrThrow(_response.body, {
@@ -201,30 +203,34 @@ export class Patient {
      * Lists all Patients receiving care at the specified Facility.
      */
     public async list(
-        request: Metriport.medical.PatientList,
+        request: Metriport.medical.PatientList = {},
         requestOptions?: Patient.RequestOptions
-    ): Promise<Metriport.medical.Patient[]> {
+    ): Promise<Metriport.medical.ListPatientsResponse> {
         const { facilityId } = request;
-        const _queryParams = new URLSearchParams();
-        _queryParams.append("facilityId", facilityId);
+        const _queryParams: Record<string, string | string[]> = {};
+        if (facilityId != null) {
+            _queryParams["facilityId"] = facilityId;
+        }
+
         const _response = await core.fetcher({
             url: urlJoin(
                 (await core.Supplier.get(this._options.environment)) ?? environments.MetriportEnvironment.Production,
-                "/patient"
+                "/medical/v1/patient"
             ),
             method: "GET",
             headers: {
                 "X-API-Key": await core.Supplier.get(this._options.apiKey),
                 "X-Fern-Language": "JavaScript",
-                "X-Fern-SDK-Name": "@fern-api/metriport",
-                "X-Fern-SDK-Version": "0.1.8",
+                "X-Fern-SDK-Name": "@metriport/api-sdk",
+                "X-Fern-SDK-Version": "8.0.0-alpha1",
             },
             contentType: "application/json",
             queryParameters: _queryParams,
             timeoutMs: requestOptions?.timeoutInSeconds != null ? requestOptions.timeoutInSeconds * 1000 : 60000,
+            maxRetries: requestOptions?.maxRetries,
         });
         if (_response.ok) {
-            return await serializers.medical.patient.list.Response.parseOrThrow(_response.body, {
+            return await serializers.medical.ListPatientsResponse.parseOrThrow(_response.body, {
                 unrecognizedObjectKeys: "passthrough",
                 allowUnrecognizedUnionMembers: true,
                 allowUnrecognizedEnumValues: true,
@@ -263,26 +269,27 @@ export class Patient {
         requestOptions?: Patient.RequestOptions
     ): Promise<void> {
         const { facilityId } = request;
-        const _queryParams = new URLSearchParams();
+        const _queryParams: Record<string, string | string[]> = {};
         if (facilityId != null) {
-            _queryParams.append("facilityId", facilityId);
+            _queryParams["facilityId"] = facilityId;
         }
 
         const _response = await core.fetcher({
             url: urlJoin(
                 (await core.Supplier.get(this._options.environment)) ?? environments.MetriportEnvironment.Production,
-                `/patient/${id}`
+                `/medical/v1/patient/${id}`
             ),
             method: "DELETE",
             headers: {
                 "X-API-Key": await core.Supplier.get(this._options.apiKey),
                 "X-Fern-Language": "JavaScript",
-                "X-Fern-SDK-Name": "@fern-api/metriport",
-                "X-Fern-SDK-Version": "0.1.8",
+                "X-Fern-SDK-Name": "@metriport/api-sdk",
+                "X-Fern-SDK-Version": "8.0.0-alpha1",
             },
             contentType: "application/json",
             queryParameters: _queryParams,
             timeoutMs: requestOptions?.timeoutInSeconds != null ? requestOptions.timeoutInSeconds * 1000 : 60000,
+            maxRetries: requestOptions?.maxRetries,
         });
         if (_response.ok) {
             return;

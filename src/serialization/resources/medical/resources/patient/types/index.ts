@@ -7,3 +7,4 @@ export * from "./Contact";
 export * from "./FacilityId";
 export * from "./BasePatient";
 export * from "./Patient";
+export * from "./ListPatientsResponse";

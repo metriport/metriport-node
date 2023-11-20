@@ -17,6 +17,7 @@ export declare namespace Organization {
 
     interface RequestOptions {
         timeoutInSeconds?: number;
+        maxRetries?: number;
     }
 }
 
@@ -27,24 +28,27 @@ export class Organization {
      * Registers your Organization in Metriport.
      */
     public async create(
-        request: Metriport.medical.BaseOrganization,
+        request: Metriport.medical.OrganizationCreate,
         requestOptions?: Organization.RequestOptions
     ): Promise<Metriport.medical.Organization> {
         const _response = await core.fetcher({
             url: urlJoin(
                 (await core.Supplier.get(this._options.environment)) ?? environments.MetriportEnvironment.Production,
-                "/organization"
+                "/medical/v1/organization"
             ),
             method: "POST",
             headers: {
                 "X-API-Key": await core.Supplier.get(this._options.apiKey),
                 "X-Fern-Language": "JavaScript",
-                "X-Fern-SDK-Name": "@fern-api/metriport",
-                "X-Fern-SDK-Version": "0.1.8",
+                "X-Fern-SDK-Name": "@metriport/api-sdk",
+                "X-Fern-SDK-Version": "8.0.0-alpha1",
             },
             contentType: "application/json",
-            body: await serializers.medical.BaseOrganization.jsonOrThrow(request, { unrecognizedObjectKeys: "strip" }),
+            body: await serializers.medical.OrganizationCreate.jsonOrThrow(request, {
+                unrecognizedObjectKeys: "strip",
+            }),
             timeoutMs: requestOptions?.timeoutInSeconds != null ? requestOptions.timeoutInSeconds * 1000 : 60000,
+            maxRetries: requestOptions?.maxRetries,
         });
         if (_response.ok) {
             return await serializers.medical.Organization.parseOrThrow(_response.body, {
@@ -84,17 +88,18 @@ export class Organization {
         const _response = await core.fetcher({
             url: urlJoin(
                 (await core.Supplier.get(this._options.environment)) ?? environments.MetriportEnvironment.Production,
-                "/organization"
+                "/medical/v1/organization"
             ),
             method: "GET",
             headers: {
                 "X-API-Key": await core.Supplier.get(this._options.apiKey),
                 "X-Fern-Language": "JavaScript",
-                "X-Fern-SDK-Name": "@fern-api/metriport",
-                "X-Fern-SDK-Version": "0.1.8",
+                "X-Fern-SDK-Name": "@metriport/api-sdk",
+                "X-Fern-SDK-Version": "8.0.0-alpha1",
             },
             contentType: "application/json",
             timeoutMs: requestOptions?.timeoutInSeconds != null ? requestOptions.timeoutInSeconds * 1000 : 60000,
+            maxRetries: requestOptions?.maxRetries,
         });
         if (_response.ok) {
             return await serializers.medical.Organization.parseOrThrow(_response.body, {
@@ -132,24 +137,29 @@ export class Organization {
      */
     public async update(
         id: string,
-        request: Metriport.medical.BaseOrganization,
+        request: Metriport.medical.OrganizationUpdateRequest,
         requestOptions?: Organization.RequestOptions
     ): Promise<Metriport.medical.Organization> {
+        const { eTag, ..._body } = request;
         const _response = await core.fetcher({
             url: urlJoin(
                 (await core.Supplier.get(this._options.environment)) ?? environments.MetriportEnvironment.Production,
-                `/organization/${id}`
+                `/medical/v1/organization/${id}`
             ),
             method: "PUT",
             headers: {
                 "X-API-Key": await core.Supplier.get(this._options.apiKey),
                 "X-Fern-Language": "JavaScript",
-                "X-Fern-SDK-Name": "@fern-api/metriport",
-                "X-Fern-SDK-Version": "0.1.8",
+                "X-Fern-SDK-Name": "@metriport/api-sdk",
+                "X-Fern-SDK-Version": "8.0.0-alpha1",
+                ETag: eTag != null ? eTag : undefined,
             },
             contentType: "application/json",
-            body: await serializers.medical.BaseOrganization.jsonOrThrow(request, { unrecognizedObjectKeys: "strip" }),
+            body: await serializers.medical.OrganizationUpdateRequest.jsonOrThrow(_body, {
+                unrecognizedObjectKeys: "strip",
+            }),
             timeoutMs: requestOptions?.timeoutInSeconds != null ? requestOptions.timeoutInSeconds * 1000 : 60000,
+            maxRetries: requestOptions?.maxRetries,
         });
         if (_response.ok) {
             return await serializers.medical.Organization.parseOrThrow(_response.body, {

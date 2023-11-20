@@ -6,5 +6,5 @@ export interface PatientList {
     /**
      * The ID of the Facility where the patient is receiving care.
      */
-    facilityId: string;
+    facilityId?: string;
 }

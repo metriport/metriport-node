@@ -5,7 +5,6 @@
 import * as environments from "../../../../../../environments";
 import * as core from "../../../../../../core";
 import * as Metriport from "../../../../..";
-import { default as URLSearchParams } from "@ungap/url-search-params";
 import urlJoin from "url-join";
 import * as serializers from "../../../../../../serialization";
 import * as errors from "../../../../../../errors";
@@ -18,6 +17,7 @@ export declare namespace Fhir {
 
     interface RequestOptions {
         timeoutInSeconds?: number;
+        maxRetries?: number;
     }
 }
 
@@ -33,34 +33,35 @@ export class Fhir {
         requestOptions?: Fhir.RequestOptions
     ): Promise<Metriport.medical.StartConsolidatedQueryResponse> {
         const { resources, dateFrom, dateTo } = request;
-        const _queryParams = new URLSearchParams();
+        const _queryParams: Record<string, string | string[]> = {};
         if (resources != null) {
-            _queryParams.append("resources", resources);
+            _queryParams["resources"] = resources;
         }
 
         if (dateFrom != null) {
-            _queryParams.append("dateFrom", dateFrom);
+            _queryParams["dateFrom"] = dateFrom;
         }
 
         if (dateTo != null) {
-            _queryParams.append("dateTo", dateTo);
+            _queryParams["dateTo"] = dateTo;
         }
 
         const _response = await core.fetcher({
             url: urlJoin(
                 (await core.Supplier.get(this._options.environment)) ?? environments.MetriportEnvironment.Production,
-                `patient/${id}/consolidated/query`
+                `/medical/v1/patient/${id}/consolidated/query`
             ),
             method: "POST",
             headers: {
                 "X-API-Key": await core.Supplier.get(this._options.apiKey),
                 "X-Fern-Language": "JavaScript",
-                "X-Fern-SDK-Name": "@fern-api/metriport",
-                "X-Fern-SDK-Version": "0.1.8",
+                "X-Fern-SDK-Name": "@metriport/api-sdk",
+                "X-Fern-SDK-Version": "8.0.0-alpha1",
             },
             contentType: "application/json",
             queryParameters: _queryParams,
             timeoutMs: requestOptions?.timeoutInSeconds != null ? requestOptions.timeoutInSeconds * 1000 : 60000,
+            maxRetries: requestOptions?.maxRetries,
         });
         if (_response.ok) {
             return await serializers.medical.StartConsolidatedQueryResponse.parseOrThrow(_response.body, {
@@ -103,17 +104,18 @@ export class Fhir {
         const _response = await core.fetcher({
             url: urlJoin(
                 (await core.Supplier.get(this._options.environment)) ?? environments.MetriportEnvironment.Production,
-                `patient/${id}/consolidated/query`
+                `/medical/v1/patient/${id}/consolidated/query`
             ),
             method: "GET",
             headers: {
                 "X-API-Key": await core.Supplier.get(this._options.apiKey),
                 "X-Fern-Language": "JavaScript",
-                "X-Fern-SDK-Name": "@fern-api/metriport",
-                "X-Fern-SDK-Version": "0.1.8",
+                "X-Fern-SDK-Name": "@metriport/api-sdk",
+                "X-Fern-SDK-Version": "8.0.0-alpha1",
             },
             contentType: "application/json",
             timeoutMs: requestOptions?.timeoutInSeconds != null ? requestOptions.timeoutInSeconds * 1000 : 60000,
+            maxRetries: requestOptions?.maxRetries,
         });
         if (_response.ok) {
             return await serializers.medical.GetConsolidatedQueryStatusResponse.parseOrThrow(_response.body, {
@@ -155,34 +157,35 @@ export class Fhir {
         requestOptions?: Fhir.RequestOptions
     ): Promise<Metriport.medical.ConsolidatedCountResponse> {
         const { resources, dateFrom, dateTo } = request;
-        const _queryParams = new URLSearchParams();
+        const _queryParams: Record<string, string | string[]> = {};
         if (resources != null) {
-            _queryParams.append("resources", resources);
+            _queryParams["resources"] = resources;
         }
 
         if (dateFrom != null) {
-            _queryParams.append("dateFrom", dateFrom);
+            _queryParams["dateFrom"] = dateFrom;
         }
 
         if (dateTo != null) {
-            _queryParams.append("dateTo", dateTo);
+            _queryParams["dateTo"] = dateTo;
         }
 
         const _response = await core.fetcher({
             url: urlJoin(
                 (await core.Supplier.get(this._options.environment)) ?? environments.MetriportEnvironment.Production,
-                `patient/${id}/consolidated/count`
+                `/medical/v1/patient/${id}/consolidated/count`
             ),
             method: "GET",
             headers: {
                 "X-API-Key": await core.Supplier.get(this._options.apiKey),
                 "X-Fern-Language": "JavaScript",
-                "X-Fern-SDK-Name": "@fern-api/metriport",
-                "X-Fern-SDK-Version": "0.1.8",
+                "X-Fern-SDK-Name": "@metriport/api-sdk",
+                "X-Fern-SDK-Version": "8.0.0-alpha1",
             },
             contentType: "application/json",
             queryParameters: _queryParams,
             timeoutMs: requestOptions?.timeoutInSeconds != null ? requestOptions.timeoutInSeconds * 1000 : 60000,
+            maxRetries: requestOptions?.maxRetries,
         });
         if (_response.ok) {
             return await serializers.medical.ConsolidatedCountResponse.parseOrThrow(_response.body, {

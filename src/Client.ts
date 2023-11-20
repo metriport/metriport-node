@@ -4,7 +4,6 @@
 
 import * as environments from "./environments";
 import * as core from "./core";
-import { Devices } from "./api/resources/devices/client/Client";
 import { Medical } from "./api/resources/medical/client/Client";
 
 export declare namespace MetriportClient {
@@ -15,17 +14,12 @@ export declare namespace MetriportClient {
 
     interface RequestOptions {
         timeoutInSeconds?: number;
+        maxRetries?: number;
     }
 }
 
 export class MetriportClient {
     constructor(protected readonly _options: MetriportClient.Options) {}
-
-    protected _devices: Devices | undefined;
-
-    public get devices(): Devices {
-        return (this._devices ??= new Devices(this._options));
-    }
 
     protected _medical: Medical | undefined;
 

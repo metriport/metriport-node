@@ -18,6 +18,7 @@ export declare namespace Medical {
 
     interface RequestOptions {
         timeoutInSeconds?: number;
+        maxRetries?: number;
     }
 }
 
