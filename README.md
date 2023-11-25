@@ -19,10 +19,12 @@ yarn add @metriport-api-sdk
 
 ## Usage
 
+⚠️ Version 8.x.x only allow access to the Medical API. For the Devices API, see [the respective section](#devices-api).
+
 [![Try it out](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/edit/metriport-ts-sdk-ws1txg?file=app.ts&view=editor)
 
 ```typescript
-import { MetriportClient, Metriport } from "@metriport/api-sdk";
+import { MetriportClient } from "@metriport/api-sdk";
 
 const metriport = new MetriportClient({
     apiKey: 'YOUR_API_KEY',
@@ -49,28 +51,28 @@ console.log('Received response from Metriport!', response);
 The Medical APIs are scoped within the `medical` property of the client. 
 
 ```ts
-import { MetriportClient, Metriport } from "@metriport/api-sdk";
+import { MetriportClient } from "@metriport/api-sdk";
 
 const metriport = new MetriportClient({
     apiKey: 'YOUR_API_KEY',
 });
 
-metriport.medical. // Access Medical APIs
+const patient = await metriport.medical.patient.get("patientId");
 ```
 
 
 ## Devices API
 
-The Devices APIs are scoped within the `devices` property of the client. 
+At this time, to access the Devices API using our SDK please use the version 7.x.x - only the Medical API is available on the latest major version of this SDK (v8+).
+
+The Devices API on v7.x:
 
 ```ts
-import { MetriportClient, Metriport } from "@metriport/api-sdk";
+import { MetriportDevicesApi } from "@metriport/api-sdk";
 
-const metriport = new MetriportClient({
-    apiKey: 'YOUR_API_KEY',
-});
+const metriport = new MetriportDevicesApi("YOUR_API_KEY");
 
-metriport.devices. // Access Decives APIs
+const response = await metriport.getActivityData("metriportUserId", "2023-10-21");
 ```
 
 
@@ -94,7 +96,7 @@ try {
 
 ## Beta status
 
-This SDK is in beta, and there may be breaking changes between versions without a major version update. Therefore, we recommend pinning the package version to a specific version in your package.json file. This way, you can install the same version each time without breaking changes unless you are intentionally looking for the latest version.
+This SDK is in beta, and there may be breaking changes between versions without a major version update. Therefore, we recommend pinning the package version to a specific version in your `package.json` file. This way, you can install the same version each time without breaking changes unless you are intentionally looking for the latest version.
 
 ## Contributing
 
