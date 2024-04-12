@@ -10,7 +10,6 @@ export interface BasePatient {
      * You may provide a comma/space delimited string to specify
      * multiple first and last names. For example, the following inputs
      * would be equivalent: "John,Jonathan" & "John Jonathan"
-     *
      */
     firstName: string;
     /** The Patient's last name(s). */
@@ -22,9 +21,10 @@ export interface BasePatient {
     /**
      * An array of the Patient's personal IDs, such as a driver's license.
      * May be empty.
-     *
      */
     personalIdentifiers?: Metriport.medical.PersonalIdentifier[];
-    address?: Metriport.medical.Addresses;
-    contact?: Metriport.medical.Contacts;
+    address: Metriport.Address[];
+    contact?: Metriport.medical.Contact[];
+    /** An external Patient ID to associate to a Patient in Metriport. */
+    externalId?: string;
 }

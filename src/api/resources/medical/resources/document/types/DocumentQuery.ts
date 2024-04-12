@@ -21,4 +21,6 @@ import * as Metriport from "../../../../..";
 export interface DocumentQuery {
     download?: Metriport.medical.Progress;
     convert?: Metriport.medical.Progress;
+    /** The ID of the Document Query. */
+    requestId?: string;
 }

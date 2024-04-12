@@ -5,7 +5,6 @@
 import * as environments from "../../../../../../environments";
 import * as core from "../../../../../../core";
 import * as Metriport from "../../../../..";
-import * as serializers from "../../../../../../serialization";
 import urlJoin from "url-join";
 import * as errors from "../../../../../../errors";
 
@@ -26,6 +25,22 @@ export class Facility {
 
     /**
      * Creates a Facility in Metriport where your patients receive care.
+     *
+     * @example
+     *     await metriport.medical.facility.create({
+     *         name: "Care Facility, LLC",
+     *         npi: "1234567891",
+     *         address: {
+     *             addressLine1: "2261 Market Street",
+     *             addressLine2: "#4818",
+     *             city: "San Francisco",
+     *             state: Metriport.UsState.Ca,
+     *             zip: "94114",
+     *             country: "USA"
+     *         },
+     *         tin: "12-3456789",
+     *         active: true
+     *     })
      */
     public async create(
         request: Metriport.medical.BaseFacility,
@@ -41,20 +56,15 @@ export class Facility {
                 "X-API-Key": await core.Supplier.get(this._options.apiKey),
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "@metriport/api-sdk",
-                "X-Fern-SDK-Version": "8.0.0-alpha1",
+                "X-Fern-SDK-Version": "0.0.343",
             },
             contentType: "application/json",
-            body: await serializers.medical.BaseFacility.jsonOrThrow(request, { unrecognizedObjectKeys: "strip" }),
+            body: request,
             timeoutMs: requestOptions?.timeoutInSeconds != null ? requestOptions.timeoutInSeconds * 1000 : 60000,
             maxRetries: requestOptions?.maxRetries,
         });
         if (_response.ok) {
-            return await serializers.medical.Facility.parseOrThrow(_response.body, {
-                unrecognizedObjectKeys: "passthrough",
-                allowUnrecognizedUnionMembers: true,
-                allowUnrecognizedEnumValues: true,
-                breadcrumbsPrefix: ["response"],
-            });
+            return _response.body as Metriport.medical.Facility;
         }
 
         if (_response.error.reason === "status-code") {
@@ -81,6 +91,9 @@ export class Facility {
 
     /**
      * Get a Facility in Metriport where your patients receive care.
+     *
+     * @example
+     *     await metriport.medical.facility.get("2.16.840.1.113883.3.666.123")
      */
     public async get(id: string, requestOptions?: Facility.RequestOptions): Promise<Metriport.medical.Facility> {
         const _response = await core.fetcher({
@@ -93,19 +106,14 @@ export class Facility {
                 "X-API-Key": await core.Supplier.get(this._options.apiKey),
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "@metriport/api-sdk",
-                "X-Fern-SDK-Version": "8.0.0-alpha1",
+                "X-Fern-SDK-Version": "0.0.343",
             },
             contentType: "application/json",
             timeoutMs: requestOptions?.timeoutInSeconds != null ? requestOptions.timeoutInSeconds * 1000 : 60000,
             maxRetries: requestOptions?.maxRetries,
         });
         if (_response.ok) {
-            return await serializers.medical.Facility.parseOrThrow(_response.body, {
-                unrecognizedObjectKeys: "passthrough",
-                allowUnrecognizedUnionMembers: true,
-                allowUnrecognizedEnumValues: true,
-                breadcrumbsPrefix: ["response"],
-            });
+            return _response.body as Metriport.medical.Facility;
         }
 
         if (_response.error.reason === "status-code") {
@@ -132,6 +140,22 @@ export class Facility {
 
     /**
      * Updates a Facility in Metriport where your patients receive care.
+     *
+     * @example
+     *     await metriport.medical.facility.update("2.16.840.1.113883.3.666.123", {
+     *         name: "Care Facility, LLC",
+     *         npi: "1234567891",
+     *         address: {
+     *             addressLine1: "2261 Market Street",
+     *             addressLine2: "#4818",
+     *             city: "San Francisco",
+     *             state: Metriport.UsState.Ca,
+     *             zip: "94114",
+     *             country: "USA"
+     *         },
+     *         tin: "12-3456789",
+     *         active: true
+     *     })
      */
     public async update(
         id: string,
@@ -148,20 +172,15 @@ export class Facility {
                 "X-API-Key": await core.Supplier.get(this._options.apiKey),
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "@metriport/api-sdk",
-                "X-Fern-SDK-Version": "8.0.0-alpha1",
+                "X-Fern-SDK-Version": "0.0.343",
             },
             contentType: "application/json",
-            body: await serializers.medical.BaseFacility.jsonOrThrow(request, { unrecognizedObjectKeys: "strip" }),
+            body: request,
             timeoutMs: requestOptions?.timeoutInSeconds != null ? requestOptions.timeoutInSeconds * 1000 : 60000,
             maxRetries: requestOptions?.maxRetries,
         });
         if (_response.ok) {
-            return await serializers.medical.Facility.parseOrThrow(_response.body, {
-                unrecognizedObjectKeys: "passthrough",
-                allowUnrecognizedUnionMembers: true,
-                allowUnrecognizedEnumValues: true,
-                breadcrumbsPrefix: ["response"],
-            });
+            return _response.body as Metriport.medical.Facility;
         }
 
         if (_response.error.reason === "status-code") {
@@ -188,6 +207,9 @@ export class Facility {
 
     /**
      * Lists all of your Facilities.
+     *
+     * @example
+     *     await metriport.medical.facility.list()
      */
     public async list(requestOptions?: Facility.RequestOptions): Promise<Metriport.medical.ListFacilitiesResponse> {
         const _response = await core.fetcher({
@@ -200,19 +222,14 @@ export class Facility {
                 "X-API-Key": await core.Supplier.get(this._options.apiKey),
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "@metriport/api-sdk",
-                "X-Fern-SDK-Version": "8.0.0-alpha1",
+                "X-Fern-SDK-Version": "0.0.343",
             },
             contentType: "application/json",
             timeoutMs: requestOptions?.timeoutInSeconds != null ? requestOptions.timeoutInSeconds * 1000 : 60000,
             maxRetries: requestOptions?.maxRetries,
         });
         if (_response.ok) {
-            return await serializers.medical.ListFacilitiesResponse.parseOrThrow(_response.body, {
-                unrecognizedObjectKeys: "passthrough",
-                allowUnrecognizedUnionMembers: true,
-                allowUnrecognizedEnumValues: true,
-                breadcrumbsPrefix: ["response"],
-            });
+            return _response.body as Metriport.medical.ListFacilitiesResponse;
         }
 
         if (_response.error.reason === "status-code") {

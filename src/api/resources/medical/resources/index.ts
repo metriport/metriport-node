@@ -8,6 +8,8 @@ export * as organization from "./organization";
 export * from "./organization/types";
 export * as patient from "./patient";
 export * from "./patient/types";
+export * as webhooks from "./webhooks";
+export * from "./webhooks/types";
 export * from "./document/client/requests";
 export * from "./fhir/client/requests";
 export * from "./organization/client/requests";

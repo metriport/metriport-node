@@ -4,8 +4,23 @@
 
 import * as Metriport from "../../../../../..";
 
+/**
+ * @example
+ *     {
+ *         name: "Metriport Inc.",
+ *         type: Metriport.medical.OrgType.Ambulatory,
+ *         location: {
+ *             addressLine1: "2261 Market Street",
+ *             addressLine2: "#4818",
+ *             city: "San Francisco",
+ *             state: Metriport.UsState.Ca,
+ *             zip: "94114",
+ *             country: "USA"
+ *         }
+ *     }
+ */
 export interface OrganizationUpdateRequest {
-    eTag?: string;
+    ETag?: string;
     /**
      * The name of your organization.
      * This is usually your legal corporate entity name -

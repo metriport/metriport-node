@@ -26,7 +26,6 @@ export interface Facility extends Metriport.medical.BaseFacility {
     /**
      * The ID assigned to this Facility. This ID will be used
      * to uniquely identify this Facility in medical documents.
-     *
      */
     id: string;
 }

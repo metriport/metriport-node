@@ -4,6 +4,31 @@
 
 import * as Metriport from "../../../../../..";
 
+/**
+ * @example
+ *     {
+ *         facilityId: "2.16.840.1.113883.3.666.5.2004.4.2005",
+ *         body: {
+ *             firstName: "Karen",
+ *             lastName: "Lynch",
+ *             dob: "1963-12-30",
+ *             genderAtBirth: "F",
+ *             personalIdentifiers: [{
+ *                     type: "driversLicense",
+ *                     state: Metriport.UsState.Ca,
+ *                     value: "51227265"
+ *                 }],
+ *             address: [{
+ *                     addressLine1: "2261 Market Street",
+ *                     addressLine2: "#4818",
+ *                     city: "San Francisco",
+ *                     state: Metriport.UsState.Ca,
+ *                     zip: "94114",
+ *                     country: "USA"
+ *                 }]
+ *         }
+ *     }
+ */
 export interface PatientCreate {
     /**
      * The ID of the Facility where the Patient is receiving care.

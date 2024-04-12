@@ -10,5 +10,5 @@ export interface DriversLicense {
     /** The ID number. */
     value: string;
     assigner?: string;
-    period?: Metriport.medical.Period;
+    period?: Metriport.fhir.Period;
 }

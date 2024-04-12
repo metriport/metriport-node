@@ -5,7 +5,6 @@
 import * as environments from "../../../../../../environments";
 import * as core from "../../../../../../core";
 import * as Metriport from "../../../../..";
-import * as serializers from "../../../../../../serialization";
 import urlJoin from "url-join";
 import * as errors from "../../../../../../errors";
 
@@ -26,6 +25,20 @@ export class Organization {
 
     /**
      * Registers your Organization in Metriport.
+     *
+     * @example
+     *     await metriport.medical.organization.create({
+     *         name: "Metriport Inc.",
+     *         type: Metriport.medical.OrgType.Ambulatory,
+     *         location: {
+     *             addressLine1: "2261 Market Street",
+     *             addressLine2: "#4818",
+     *             city: "San Francisco",
+     *             state: Metriport.UsState.Ca,
+     *             zip: "94114",
+     *             country: "USA"
+     *         }
+     *     })
      */
     public async create(
         request: Metriport.medical.OrganizationCreate,
@@ -41,22 +54,15 @@ export class Organization {
                 "X-API-Key": await core.Supplier.get(this._options.apiKey),
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "@metriport/api-sdk",
-                "X-Fern-SDK-Version": "8.0.0-alpha1",
+                "X-Fern-SDK-Version": "0.0.343",
             },
             contentType: "application/json",
-            body: await serializers.medical.OrganizationCreate.jsonOrThrow(request, {
-                unrecognizedObjectKeys: "strip",
-            }),
+            body: request,
             timeoutMs: requestOptions?.timeoutInSeconds != null ? requestOptions.timeoutInSeconds * 1000 : 60000,
             maxRetries: requestOptions?.maxRetries,
         });
         if (_response.ok) {
-            return await serializers.medical.Organization.parseOrThrow(_response.body, {
-                unrecognizedObjectKeys: "passthrough",
-                allowUnrecognizedUnionMembers: true,
-                allowUnrecognizedEnumValues: true,
-                breadcrumbsPrefix: ["response"],
-            });
+            return _response.body as Metriport.medical.Organization;
         }
 
         if (_response.error.reason === "status-code") {
@@ -83,6 +89,9 @@ export class Organization {
 
     /**
      * Gets the Organization representing your legal corporate entity.
+     *
+     * @example
+     *     await metriport.medical.organization.get()
      */
     public async get(requestOptions?: Organization.RequestOptions): Promise<Metriport.medical.Organization> {
         const _response = await core.fetcher({
@@ -95,19 +104,14 @@ export class Organization {
                 "X-API-Key": await core.Supplier.get(this._options.apiKey),
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "@metriport/api-sdk",
-                "X-Fern-SDK-Version": "8.0.0-alpha1",
+                "X-Fern-SDK-Version": "0.0.343",
             },
             contentType: "application/json",
             timeoutMs: requestOptions?.timeoutInSeconds != null ? requestOptions.timeoutInSeconds * 1000 : 60000,
             maxRetries: requestOptions?.maxRetries,
         });
         if (_response.ok) {
-            return await serializers.medical.Organization.parseOrThrow(_response.body, {
-                unrecognizedObjectKeys: "passthrough",
-                allowUnrecognizedUnionMembers: true,
-                allowUnrecognizedEnumValues: true,
-                breadcrumbsPrefix: ["response"],
-            });
+            return _response.body as Metriport.medical.Organization;
         }
 
         if (_response.error.reason === "status-code") {
@@ -134,13 +138,27 @@ export class Organization {
 
     /**
      * Updates your Organization's details.
+     *
+     * @example
+     *     await metriport.medical.organization.update("12345678", {
+     *         name: "Metriport Inc.",
+     *         type: Metriport.medical.OrgType.Ambulatory,
+     *         location: {
+     *             addressLine1: "2261 Market Street",
+     *             addressLine2: "#4818",
+     *             city: "San Francisco",
+     *             state: Metriport.UsState.Ca,
+     *             zip: "94114",
+     *             country: "USA"
+     *         }
+     *     })
      */
     public async update(
         id: string,
         request: Metriport.medical.OrganizationUpdateRequest,
         requestOptions?: Organization.RequestOptions
     ): Promise<Metriport.medical.Organization> {
-        const { eTag, ..._body } = request;
+        const { ETag: eTag, ..._body } = request;
         const _response = await core.fetcher({
             url: urlJoin(
                 (await core.Supplier.get(this._options.environment)) ?? environments.MetriportEnvironment.Production,
@@ -151,23 +169,16 @@ export class Organization {
                 "X-API-Key": await core.Supplier.get(this._options.apiKey),
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "@metriport/api-sdk",
-                "X-Fern-SDK-Version": "8.0.0-alpha1",
+                "X-Fern-SDK-Version": "0.0.343",
                 ETag: eTag != null ? eTag : undefined,
             },
             contentType: "application/json",
-            body: await serializers.medical.OrganizationUpdateRequest.jsonOrThrow(_body, {
-                unrecognizedObjectKeys: "strip",
-            }),
+            body: _body,
             timeoutMs: requestOptions?.timeoutInSeconds != null ? requestOptions.timeoutInSeconds * 1000 : 60000,
             maxRetries: requestOptions?.maxRetries,
         });
         if (_response.ok) {
-            return await serializers.medical.Organization.parseOrThrow(_response.body, {
-                unrecognizedObjectKeys: "passthrough",
-                allowUnrecognizedUnionMembers: true,
-                allowUnrecognizedEnumValues: true,
-                breadcrumbsPrefix: ["response"],
-            });
+            return _response.body as Metriport.medical.Organization;
         }
 
         if (_response.error.reason === "status-code") {

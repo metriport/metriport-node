@@ -11,7 +11,6 @@ export interface ConsolidatedCountResponse {
      * Object containing resource types as properties and the amount of entries for
      * the resource as the value (integer). Only resource types with amount
      * of entries higher than one are included.
-     *
      */
     resources: Record<string, number>;
     /** The filters used to perform this operation. */

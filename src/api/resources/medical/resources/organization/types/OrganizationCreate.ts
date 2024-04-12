@@ -9,7 +9,6 @@ export interface OrganizationCreate {
      * The name of your organization.
      * This is usually your legal corporate entity name -
      * for example `Metriport Inc.`.
-     *
      */
     name: string;
     /** The type of your organization. */

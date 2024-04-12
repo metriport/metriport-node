@@ -5,7 +5,6 @@
 import * as environments from "../../../../../../environments";
 import * as core from "../../../../../../core";
 import * as Metriport from "../../../../..";
-import * as serializers from "../../../../../../serialization";
 import urlJoin from "url-join";
 import * as errors from "../../../../../../errors";
 
@@ -31,6 +30,29 @@ export class Patient {
      * For example, nicknames, old addresses, multiple phone numbers,
      * a pre-marital last name, etc.
      *
+     * @example
+     *     await metriport.medical.patient.create({
+     *         facilityId: "2.16.840.1.113883.3.666.5.2004.4.2005",
+     *         body: {
+     *             firstName: "Karen",
+     *             lastName: "Lynch",
+     *             dob: "1963-12-30",
+     *             genderAtBirth: "F",
+     *             personalIdentifiers: [{
+     *                     type: "driversLicense",
+     *                     state: Metriport.UsState.Ca,
+     *                     value: "51227265"
+     *                 }],
+     *             address: [{
+     *                     addressLine1: "2261 Market Street",
+     *                     addressLine2: "#4818",
+     *                     city: "San Francisco",
+     *                     state: Metriport.UsState.Ca,
+     *                     zip: "94114",
+     *                     country: "USA"
+     *                 }]
+     *         }
+     *     })
      */
     public async create(
         request: Metriport.medical.PatientCreate,
@@ -49,21 +71,16 @@ export class Patient {
                 "X-API-Key": await core.Supplier.get(this._options.apiKey),
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "@metriport/api-sdk",
-                "X-Fern-SDK-Version": "8.0.0-alpha1",
+                "X-Fern-SDK-Version": "0.0.343",
             },
             contentType: "application/json",
             queryParameters: _queryParams,
-            body: await serializers.medical.BasePatient.jsonOrThrow(_body, { unrecognizedObjectKeys: "strip" }),
+            body: _body,
             timeoutMs: requestOptions?.timeoutInSeconds != null ? requestOptions.timeoutInSeconds * 1000 : 60000,
             maxRetries: requestOptions?.maxRetries,
         });
         if (_response.ok) {
-            return await serializers.medical.Patient.parseOrThrow(_response.body, {
-                unrecognizedObjectKeys: "passthrough",
-                allowUnrecognizedUnionMembers: true,
-                allowUnrecognizedEnumValues: true,
-                breadcrumbsPrefix: ["response"],
-            });
+            return _response.body as Metriport.medical.Patient;
         }
 
         if (_response.error.reason === "status-code") {
@@ -90,6 +107,9 @@ export class Patient {
 
     /**
      * Get a Patient
+     *
+     * @example
+     *     await metriport.medical.patient.get("2.16.840.1.113883.3.666.777")
      */
     public async get(id: string, requestOptions?: Patient.RequestOptions): Promise<Metriport.medical.Patient> {
         const _response = await core.fetcher({
@@ -102,19 +122,14 @@ export class Patient {
                 "X-API-Key": await core.Supplier.get(this._options.apiKey),
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "@metriport/api-sdk",
-                "X-Fern-SDK-Version": "8.0.0-alpha1",
+                "X-Fern-SDK-Version": "0.0.343",
             },
             contentType: "application/json",
             timeoutMs: requestOptions?.timeoutInSeconds != null ? requestOptions.timeoutInSeconds * 1000 : 60000,
             maxRetries: requestOptions?.maxRetries,
         });
         if (_response.ok) {
-            return await serializers.medical.Patient.parseOrThrow(_response.body, {
-                unrecognizedObjectKeys: "passthrough",
-                allowUnrecognizedUnionMembers: true,
-                allowUnrecognizedEnumValues: true,
-                breadcrumbsPrefix: ["response"],
-            });
+            return _response.body as Metriport.medical.Patient;
         }
 
         if (_response.error.reason === "status-code") {
@@ -160,21 +175,16 @@ export class Patient {
                 "X-API-Key": await core.Supplier.get(this._options.apiKey),
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "@metriport/api-sdk",
-                "X-Fern-SDK-Version": "8.0.0-alpha1",
+                "X-Fern-SDK-Version": "0.0.343",
             },
             contentType: "application/json",
             queryParameters: _queryParams,
-            body: await serializers.medical.BasePatient.jsonOrThrow(_body, { unrecognizedObjectKeys: "strip" }),
+            body: _body,
             timeoutMs: requestOptions?.timeoutInSeconds != null ? requestOptions.timeoutInSeconds * 1000 : 60000,
             maxRetries: requestOptions?.maxRetries,
         });
         if (_response.ok) {
-            return await serializers.medical.Patient.parseOrThrow(_response.body, {
-                unrecognizedObjectKeys: "passthrough",
-                allowUnrecognizedUnionMembers: true,
-                allowUnrecognizedEnumValues: true,
-                breadcrumbsPrefix: ["response"],
-            });
+            return _response.body as Metriport.medical.Patient;
         }
 
         if (_response.error.reason === "status-code") {
@@ -200,7 +210,7 @@ export class Patient {
     }
 
     /**
-     * Lists all Patients receiving care at the specified Facility.
+     * Lists all Patients receiving care at the specified Facility, or all Patients if no Facility is specified.
      */
     public async list(
         request: Metriport.medical.PatientList = {},
@@ -222,7 +232,7 @@ export class Patient {
                 "X-API-Key": await core.Supplier.get(this._options.apiKey),
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "@metriport/api-sdk",
-                "X-Fern-SDK-Version": "8.0.0-alpha1",
+                "X-Fern-SDK-Version": "0.0.343",
             },
             contentType: "application/json",
             queryParameters: _queryParams,
@@ -230,12 +240,7 @@ export class Patient {
             maxRetries: requestOptions?.maxRetries,
         });
         if (_response.ok) {
-            return await serializers.medical.ListPatientsResponse.parseOrThrow(_response.body, {
-                unrecognizedObjectKeys: "passthrough",
-                allowUnrecognizedUnionMembers: true,
-                allowUnrecognizedEnumValues: true,
-                breadcrumbsPrefix: ["response"],
-            });
+            return _response.body as Metriport.medical.ListPatientsResponse;
         }
 
         if (_response.error.reason === "status-code") {
@@ -284,7 +289,7 @@ export class Patient {
                 "X-API-Key": await core.Supplier.get(this._options.apiKey),
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "@metriport/api-sdk",
-                "X-Fern-SDK-Version": "8.0.0-alpha1",
+                "X-Fern-SDK-Version": "0.0.343",
             },
             contentType: "application/json",
             queryParameters: _queryParams,
@@ -293,6 +298,109 @@ export class Patient {
         });
         if (_response.ok) {
             return;
+        }
+
+        if (_response.error.reason === "status-code") {
+            throw new errors.MetriportError({
+                statusCode: _response.error.statusCode,
+                body: _response.error.body,
+            });
+        }
+
+        switch (_response.error.reason) {
+            case "non-json":
+                throw new errors.MetriportError({
+                    statusCode: _response.error.statusCode,
+                    body: _response.error.rawBody,
+                });
+            case "timeout":
+                throw new errors.MetriportTimeoutError();
+            case "unknown":
+                throw new errors.MetriportError({
+                    message: _response.error.errorMessage,
+                });
+        }
+    }
+
+    /**
+     * Returns the URL for a medical record summary
+     */
+    public async getMedicalRecordSummary(
+        patientId: string,
+        request: Metriport.medical.MedicalRecordSummaryRequest,
+        requestOptions?: Patient.RequestOptions
+    ): Promise<string> {
+        const { conversionType } = request;
+        const _queryParams: Record<string, string | string[]> = {};
+        _queryParams["conversionType"] = conversionType;
+        const _response = await core.fetcher({
+            url: urlJoin(
+                (await core.Supplier.get(this._options.environment)) ?? environments.MetriportEnvironment.Production,
+                `/medical/v1/patient/${patientId}/medical-record`
+            ),
+            method: "GET",
+            headers: {
+                "X-API-Key": await core.Supplier.get(this._options.apiKey),
+                "X-Fern-Language": "JavaScript",
+                "X-Fern-SDK-Name": "@metriport/api-sdk",
+                "X-Fern-SDK-Version": "0.0.343",
+            },
+            contentType: "application/json",
+            queryParameters: _queryParams,
+            timeoutMs: requestOptions?.timeoutInSeconds != null ? requestOptions.timeoutInSeconds * 1000 : 60000,
+            maxRetries: requestOptions?.maxRetries,
+        });
+        if (_response.ok) {
+            return _response.body as string;
+        }
+
+        if (_response.error.reason === "status-code") {
+            throw new errors.MetriportError({
+                statusCode: _response.error.statusCode,
+                body: _response.error.body,
+            });
+        }
+
+        switch (_response.error.reason) {
+            case "non-json":
+                throw new errors.MetriportError({
+                    statusCode: _response.error.statusCode,
+                    body: _response.error.rawBody,
+                });
+            case "timeout":
+                throw new errors.MetriportTimeoutError();
+            case "unknown":
+                throw new errors.MetriportError({
+                    message: _response.error.errorMessage,
+                });
+        }
+    }
+
+    /**
+     * Returns the status of a medical record summary
+     */
+    public async getMedicalRecordSummaryStatus(
+        patientId: string,
+        requestOptions?: Patient.RequestOptions
+    ): Promise<Metriport.medical.MedicalRecordStatus> {
+        const _response = await core.fetcher({
+            url: urlJoin(
+                (await core.Supplier.get(this._options.environment)) ?? environments.MetriportEnvironment.Production,
+                `/medical/v1/patient/${patientId}/medical-record-status`
+            ),
+            method: "GET",
+            headers: {
+                "X-API-Key": await core.Supplier.get(this._options.apiKey),
+                "X-Fern-Language": "JavaScript",
+                "X-Fern-SDK-Name": "@metriport/api-sdk",
+                "X-Fern-SDK-Version": "0.0.343",
+            },
+            contentType: "application/json",
+            timeoutMs: requestOptions?.timeoutInSeconds != null ? requestOptions.timeoutInSeconds * 1000 : 60000,
+            maxRetries: requestOptions?.maxRetries,
+        });
+        if (_response.ok) {
+            return _response.body as Metriport.medical.MedicalRecordStatus;
         }
 
         if (_response.error.reason === "status-code") {

@@ -6,7 +6,6 @@ import * as environments from "../../../../../../environments";
 import * as core from "../../../../../../core";
 import * as Metriport from "../../../../..";
 import urlJoin from "url-join";
-import * as serializers from "../../../../../../serialization";
 import * as errors from "../../../../../../errors";
 
 export declare namespace Document {
@@ -38,12 +37,21 @@ export class Document {
      * If there's no document to be converted, the total will be set to zero and
      * the status to `completed`.
      *
+     * @example
+     *     await metriport.medical.document.startQuery({
+     *         patientId: "12345678",
+     *         facilityId: "12345678",
+     *         body: {
+     *             "youCan": "putAny",
+     *             "stringKeyValue": "pairsHere"
+     *         }
+     *     })
      */
     public async startQuery(
         request: Metriport.medical.StartDocumentQueryRequest,
         requestOptions?: Document.RequestOptions
     ): Promise<Metriport.medical.DocumentQuery> {
-        const { patientId, facilityId } = request;
+        const { patientId, facilityId, body: _body } = request;
         const _queryParams: Record<string, string | string[]> = {};
         _queryParams["patientId"] = patientId;
         _queryParams["facilityId"] = facilityId;
@@ -57,20 +65,16 @@ export class Document {
                 "X-API-Key": await core.Supplier.get(this._options.apiKey),
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "@metriport/api-sdk",
-                "X-Fern-SDK-Version": "8.0.0-alpha1",
+                "X-Fern-SDK-Version": "0.0.343",
             },
             contentType: "application/json",
             queryParameters: _queryParams,
+            body: _body != null ? _body : undefined,
             timeoutMs: requestOptions?.timeoutInSeconds != null ? requestOptions.timeoutInSeconds * 1000 : 60000,
             maxRetries: requestOptions?.maxRetries,
         });
         if (_response.ok) {
-            return await serializers.medical.DocumentQuery.parseOrThrow(_response.body, {
-                unrecognizedObjectKeys: "passthrough",
-                allowUnrecognizedUnionMembers: true,
-                allowUnrecognizedEnumValues: true,
-                breadcrumbsPrefix: ["response"],
-            });
+            return _response.body as Metriport.medical.DocumentQuery;
         }
 
         if (_response.error.reason === "status-code") {
@@ -101,6 +105,10 @@ export class Document {
      * of the document query is taking longer than expected.
      * See more on [Start Document Query](/medical-api/api-reference/document/start-document-query).
      *
+     * @example
+     *     await metriport.medical.document.getQueryStatus({
+     *         patientId: "12345678"
+     *     })
      */
     public async getQueryStatus(
         request: Metriport.medical.GetDocumentQueryStatusRequest,
@@ -119,7 +127,7 @@ export class Document {
                 "X-API-Key": await core.Supplier.get(this._options.apiKey),
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "@metriport/api-sdk",
-                "X-Fern-SDK-Version": "8.0.0-alpha1",
+                "X-Fern-SDK-Version": "0.0.343",
             },
             contentType: "application/json",
             queryParameters: _queryParams,
@@ -127,12 +135,7 @@ export class Document {
             maxRetries: requestOptions?.maxRetries,
         });
         if (_response.ok) {
-            return await serializers.medical.DocumentQuery.parseOrThrow(_response.body, {
-                unrecognizedObjectKeys: "passthrough",
-                allowUnrecognizedUnionMembers: true,
-                allowUnrecognizedEnumValues: true,
-                breadcrumbsPrefix: ["response"],
-            });
+            return _response.body as Metriport.medical.DocumentQuery;
         }
 
         if (_response.error.reason === "status-code") {
@@ -162,22 +165,24 @@ export class Document {
      * This endpoint returns the document references available
      * at Metriport which are associated with the given Patient.
      * To start a new document query, see the [Start Document Query endpoint](/api-reference/medical/document/start-query).
-     *
      */
     public async list(
         request: Metriport.medical.ListDocumentsRequest,
         requestOptions?: Document.RequestOptions
-    ): Promise<Metriport.medical.ListDocumentsResponse> {
-        const { patientId, facilityId, dateFrom, dateTo } = request;
+    ): Promise<Metriport.medical.ListDocumentReferences> {
+        const { patientId, dateFrom, dateTo, content } = request;
         const _queryParams: Record<string, string | string[]> = {};
         _queryParams["patientId"] = patientId;
-        _queryParams["facilityId"] = facilityId;
         if (dateFrom != null) {
             _queryParams["dateFrom"] = dateFrom;
         }
 
         if (dateTo != null) {
             _queryParams["dateTo"] = dateTo;
+        }
+
+        if (content != null) {
+            _queryParams["content"] = content;
         }
 
         const _response = await core.fetcher({
@@ -190,7 +195,7 @@ export class Document {
                 "X-API-Key": await core.Supplier.get(this._options.apiKey),
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "@metriport/api-sdk",
-                "X-Fern-SDK-Version": "8.0.0-alpha1",
+                "X-Fern-SDK-Version": "0.0.343",
             },
             contentType: "application/json",
             queryParameters: _queryParams,
@@ -198,12 +203,7 @@ export class Document {
             maxRetries: requestOptions?.maxRetries,
         });
         if (_response.ok) {
-            return await serializers.medical.ListDocumentsResponse.parseOrThrow(_response.body, {
-                unrecognizedObjectKeys: "passthrough",
-                allowUnrecognizedUnionMembers: true,
-                allowUnrecognizedEnumValues: true,
-                breadcrumbsPrefix: ["response"],
-            });
+            return _response.body as Metriport.medical.ListDocumentReferences;
         }
 
         if (_response.error.reason === "status-code") {
@@ -229,11 +229,16 @@ export class Document {
     }
 
     /**
-     * Gets a presigned URL for downloading the specified document.
+     * Gets a downloadable URL for downloading the specified document.
      * This endpoint returns a URL which you can use to download
      * the specified document and/or convert using the file name
      * provided from the [List Documents](/api-reference/medical/document/list) endpoint.
      *
+     * @example
+     *     await metriport.medical.document.getUrl({
+     *         fileName: "x-ray",
+     *         conversionType: Metriport.medical.ConversionType.Pdf
+     *     })
      */
     public async getUrl(
         request: Metriport.medical.GetDocumentUrlRequest,
@@ -249,14 +254,14 @@ export class Document {
         const _response = await core.fetcher({
             url: urlJoin(
                 (await core.Supplier.get(this._options.environment)) ?? environments.MetriportEnvironment.Production,
-                "/medical/v1/document/downloadUrl"
+                "/medical/v1/document/download-url"
             ),
             method: "GET",
             headers: {
                 "X-API-Key": await core.Supplier.get(this._options.apiKey),
                 "X-Fern-Language": "JavaScript",
                 "X-Fern-SDK-Name": "@metriport/api-sdk",
-                "X-Fern-SDK-Version": "8.0.0-alpha1",
+                "X-Fern-SDK-Version": "0.0.343",
             },
             contentType: "application/json",
             queryParameters: _queryParams,
@@ -264,12 +269,164 @@ export class Document {
             maxRetries: requestOptions?.maxRetries,
         });
         if (_response.ok) {
-            return await serializers.medical.DocumentUrl.parseOrThrow(_response.body, {
-                unrecognizedObjectKeys: "passthrough",
-                allowUnrecognizedUnionMembers: true,
-                allowUnrecognizedEnumValues: true,
-                breadcrumbsPrefix: ["response"],
+            return _response.body as Metriport.medical.DocumentUrl;
+        }
+
+        if (_response.error.reason === "status-code") {
+            throw new errors.MetriportError({
+                statusCode: _response.error.statusCode,
+                body: _response.error.body,
             });
+        }
+
+        switch (_response.error.reason) {
+            case "non-json":
+                throw new errors.MetriportError({
+                    statusCode: _response.error.statusCode,
+                    body: _response.error.rawBody,
+                });
+            case "timeout":
+                throw new errors.MetriportTimeoutError();
+            case "unknown":
+                throw new errors.MetriportError({
+                    message: _response.error.errorMessage,
+                });
+        }
+    }
+
+    /**
+     * Creates a DocumentReference and returns its ID and a URL to use for a medical document upload to our servers.
+     *
+     * @example
+     *     await metriport.medical.document.createDocumentReference({
+     *         patientId: "12345678",
+     *         body: {
+     *             resourceType: "DocumentReference",
+     *             content: [{
+     *                     attachment: {
+     *                         title: "Burn management Hospital Progress note"
+     *                     }
+     *                 }],
+     *             contained: [
+     *                 {
+     *                     "resourceType": "ExampleResource",
+     *                     "id": "exampleId1"
+     *                 },
+     *                 {
+     *                     "resourceType": "ExampleResource",
+     *                     "id": "exampleId2"
+     *                 }
+     *             ],
+     *             description: "Third degree wrist burn treatment",
+     *             type: {
+     *                 text: "Burn management Hospital Progress note",
+     *                 coding: [{
+     *                         code: "100556-0",
+     *                         system: "http://loinc.org",
+     *                         display: "Burn management Hospital Progress note"
+     *                     }]
+     *             },
+     *             context: {
+     *                 period: {
+     *                     start: "2023-10-10T14:14:17Z",
+     *                     end: "2023-10-10T15:30:30Z"
+     *                 },
+     *                 facilityType: {
+     *                     text: "John Snow Clinic - Acute Care Centre"
+     *                 }
+     *             }
+     *         }
+     *     })
+     */
+    public async createDocumentReference(
+        request: Metriport.medical.UploadDocumentRequest,
+        requestOptions?: Document.RequestOptions
+    ): Promise<Metriport.medical.UploadDocumentResponse> {
+        const { patientId, body: _body } = request;
+        const _queryParams: Record<string, string | string[]> = {};
+        _queryParams["patientId"] = patientId;
+        const _response = await core.fetcher({
+            url: urlJoin(
+                (await core.Supplier.get(this._options.environment)) ?? environments.MetriportEnvironment.Production,
+                "/medical/v1/document/upload"
+            ),
+            method: "POST",
+            headers: {
+                "X-API-Key": await core.Supplier.get(this._options.apiKey),
+                "X-Fern-Language": "JavaScript",
+                "X-Fern-SDK-Name": "@metriport/api-sdk",
+                "X-Fern-SDK-Version": "0.0.343",
+            },
+            contentType: "application/json",
+            queryParameters: _queryParams,
+            body: _body,
+            timeoutMs: requestOptions?.timeoutInSeconds != null ? requestOptions.timeoutInSeconds * 1000 : 60000,
+            maxRetries: requestOptions?.maxRetries,
+        });
+        if (_response.ok) {
+            return _response.body as Metriport.medical.UploadDocumentResponse;
+        }
+
+        if (_response.error.reason === "status-code") {
+            throw new errors.MetriportError({
+                statusCode: _response.error.statusCode,
+                body: _response.error.body,
+            });
+        }
+
+        switch (_response.error.reason) {
+            case "non-json":
+                throw new errors.MetriportError({
+                    statusCode: _response.error.statusCode,
+                    body: _response.error.rawBody,
+                });
+            case "timeout":
+                throw new errors.MetriportTimeoutError();
+            case "unknown":
+                throw new errors.MetriportError({
+                    message: _response.error.errorMessage,
+                });
+        }
+    }
+
+    /**
+     * Triggers a process to generate a list of download URLs for all of the patient's documents.
+     * The status of the process is returned in the response. Initially, it will be `processing`,
+     * and when the process is finished, the status will be updated to `completed` or `failed`.
+     * If you trigger this endpoint again while the process is still running, you will get a response
+     * that reflects the current progress.
+     *
+     * @example
+     *     await metriport.medical.document.startBulkGetDocumentUrl({
+     *         patientId: "12345678"
+     *     })
+     */
+    public async startBulkGetDocumentUrl(
+        request: Metriport.medical.StartBulkGetDocumentUrlRequest,
+        requestOptions?: Document.RequestOptions
+    ): Promise<Metriport.medical.BulkGetDocumentUrlQuery> {
+        const { patientId } = request;
+        const _queryParams: Record<string, string | string[]> = {};
+        _queryParams["patientId"] = patientId;
+        const _response = await core.fetcher({
+            url: urlJoin(
+                (await core.Supplier.get(this._options.environment)) ?? environments.MetriportEnvironment.Production,
+                "/medical/v1/document/download-url/bulk"
+            ),
+            method: "POST",
+            headers: {
+                "X-API-Key": await core.Supplier.get(this._options.apiKey),
+                "X-Fern-Language": "JavaScript",
+                "X-Fern-SDK-Name": "@metriport/api-sdk",
+                "X-Fern-SDK-Version": "0.0.343",
+            },
+            contentType: "application/json",
+            queryParameters: _queryParams,
+            timeoutMs: requestOptions?.timeoutInSeconds != null ? requestOptions.timeoutInSeconds * 1000 : 60000,
+            maxRetries: requestOptions?.maxRetries,
+        });
+        if (_response.ok) {
+            return _response.body as Metriport.medical.BulkGetDocumentUrlQuery;
         }
 
         if (_response.error.reason === "status-code") {

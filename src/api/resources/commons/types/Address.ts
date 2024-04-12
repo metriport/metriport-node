@@ -27,5 +27,5 @@ export interface Address {
     /** Zip must be a string consisting of 5 numbers. */
     zip: string;
     /** Defaults to “USA” */
-    country: string;
+    country?: string;
 }

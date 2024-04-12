@@ -12,6 +12,6 @@ import * as Metriport from "../../../../..";
  *     }
  */
 export interface GetConsolidatedQueryStatusResponse {
-    status: Metriport.medical.PatientConsolidatedDataStatus;
+    status?: Metriport.medical.PatientConsolidatedDataStatus;
     message?: string;
 }

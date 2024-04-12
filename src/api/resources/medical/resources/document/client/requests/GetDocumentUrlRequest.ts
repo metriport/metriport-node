@@ -4,6 +4,13 @@
 
 import * as Metriport from "../../../../../..";
 
+/**
+ * @example
+ *     {
+ *         fileName: "x-ray",
+ *         conversionType: Metriport.medical.ConversionType.Pdf
+ *     }
+ */
 export interface GetDocumentUrlRequest {
     /**
      * The file name of the document
@@ -12,7 +19,6 @@ export interface GetDocumentUrlRequest {
     /**
      * The doc type to convert to. Either `html` or `pdf`.
      * This parameter should only be used for converting XML/CDA files.
-     *
      */
     conversionType?: Metriport.medical.ConversionType;
 }

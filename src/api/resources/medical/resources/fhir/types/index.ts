@@ -3,3 +3,4 @@ export * from "./PatientConsolidatedDataStatus";
 export * from "./GetConsolidatedQueryStatusResponse";
 export * from "./ConsolidatedCountResponse";
 export * from "./Filter";
+export * from "./ConsolidatedBundleUpload";
