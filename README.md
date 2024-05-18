@@ -43,38 +43,13 @@ const response = await metriport.medical.organization.create({
   }
 });
 
-console.log('Received response from Metriport!', response);
-```
+console.log('Organization creted at Metriport:', response);
 
-## Medical API
-
-The Medical APIs are scoped within the `medical` property of the client. 
-
-```ts
-import { MetriportClient } from "@metriport/api-sdk";
-
-const metriport = new MetriportClient({
-    apiKey: 'YOUR_API_KEY',
-});
+// ...
 
 const patient = await metriport.medical.patient.get("patientId");
+
 ```
-
-
-## Devices API
-
-At this time, to access the Devices API using our SDK please use the version 7.x.x - only the Medical API is available on the latest major version of this SDK (v8+).
-
-The Devices API on v7.x:
-
-```ts
-import { MetriportDevicesApi } from "@metriport/api-sdk";
-
-const metriport = new MetriportDevicesApi("YOUR_API_KEY");
-
-const response = await metriport.getActivityData("metriportUserId", "2023-10-21");
-```
-
 
 ## Handling errors
 
