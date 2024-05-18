@@ -1,6 +1,6 @@
 # Metriport Node Library
 
-[![npm shield](https://img.shields.io/npm/v/@fern-api/metriport)](https://www.npmjs.com/package/@fern-api/metriport)
+[![npm shield](https://img.shields.io/npm/v/@metriport/api-sdk)](https://www.npmjs.com/package/@metriport/api-sdk)
 [![fern shield](https://img.shields.io/badge/%F0%9F%8C%BF-SDK%20generated%20by%20Fern-brightgreen)](https://github.com/fern-api/fern)
 
 The Metriport Node.js library provides access to the Metriport API from JavaScript/TypeScript.
@@ -18,8 +18,6 @@ yarn add @fern-api/metriport
 ```
 
 ## Usage
-
-[![Try it out](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/edit/metriport-ts-sdk-ws1txg?file=app.ts&view=editor)
 
 ```typescript
 import { MetriportClient, Metriport } from '@fern-api/metriport';
