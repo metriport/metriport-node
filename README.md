@@ -1,7 +1,7 @@
 # Metriport Node Library
 
 [![npm shield](https://img.shields.io/npm/v/@metriport/api-sdk)](https://www.npmjs.com/package/@metriport/api-sdk)
-[![fern shield](https://img.shields.io/badge/%F0%9F%8C%BF-SDK%20generated%20by%20Fern-brightgreen)](https://github.com/fern-api/fern)
+[![fern shield](https://img.shields.io/badge/%F0%9F%8C%BF-SDK%20generated%20by%20Fern-brightgreen)](https://buildwithfern.com/?utm_source=metriport/metriport-node/readme)
 
 A package to get started using [Metriport](https://metriport.com/) - universal and open-source API for healthcare data.
 
